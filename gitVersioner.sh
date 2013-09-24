@@ -56,17 +56,21 @@ echo -e "Old version code\t$CURRENT_VERSION_CODE"
 echo $CURRENT_VERSION_NAME | sed s/$CURRENT_VERSION_CODE/$NEW_VERSION_CODE/ $WORKING_COPY > $MANIFEST
 echo -e "New version code\t$NEW_VERSION_CODE" 
 #echo -e "\nNew version name\t$NEW_VERSION_NAME"
+rm $WORKING_COPY
+rm $BACKUP
+rm 0
 if hash git 2>/dev/null; then
 	if [ -f $GIT_CONFIG ]; then
-		git tag $VERSION_PREFIX$NEW_VERSION_NAME
-		echo "Tagging this commit as $VERSION_PREFIX$NEW_VERSION_NAME"
+		git add -u
+		git commit -m "$CURRENT_VERSION_NAME"
+		TAG="$VERSION_PREFIX$NEW_VERSION_CODE"
+		git tag $TAG
+		echo "Tagging this commit as $TAG"
 	else
 		echo "We are not in an git initialized directory!"
 	fi
 else 
 	echo "Git not installed"
 fi
-rm $WORKING_COPY
-rm $BACKUP
-rm 0
+
 exit 0
