@@ -1,5 +1,10 @@
 #!/bin/bash
 #DEFAULT TAG
+printHelp() {
+	echo -e "\tup\t[number]\tUps the version. Default by one"
+	echo -e "\tdown\t[number]\tDowns the version by one. Default by one"
+	echo -e "\thelp\t\t\tShows this message"
+}
 MANIFEST="./AndroidManifest.xml"
 WORKING_COPY="input.xml"
 BACKUP="AndroidManifest.xml.orig"
@@ -18,12 +23,25 @@ DELIMINATOR='"'
 CURRENT_VERSION_CODE=`cat $WORKING_COPY | grep "$XML_ANDROID_VERSION_CODE" | cut -f 2 -d $DELIMINATOR`
 CURRENT_VERSION_NAME=`cat $WORKING_COPY | grep "$XML_ANDROID_VERSION_NAME" | cut -f 2 -d $DELIMINATOR`
 if [ $# > 0 ]; then	 
-	if [[ $1 == "down" ]]; then
-		echo "Version goes down"
-		NEW_VERSION_CODE=`echo $CURRENT_VERSION_CODE -1 | bc`
+	if [[ $1 == "down" ]]; then		
+		if [[ ! -z $2 ]]; then 
+			echo "Version goes down by $2"		
+			NEW_VERSION_CODE=`echo $CURRENT_VERSION_CODE -$2 | bc`
+		else
+			echo "Version goes down"		
+			NEW_VERSION_CODE=`echo $CURRENT_VERSION_CODE -1 | bc`
+		fi
 	elif [[ $1 == "up" ]]; then			
-		echo "Version goes up"
-		NEW_VERSION_CODE=`echo $CURRENT_VERSION_CODE +1 | bc`
+		if [[ ! -z $2 ]]; then 
+			echo "Version goes up by $2"
+			NEW_VERSION_CODE=`echo $CURRENT_VERSION_CODE + $2 | bc`
+		else 
+			echo "Version goes up"
+			NEW_VERSION_CODE=`echo $CURRENT_VERSION_CODE +1 | bc`
+		fi 
+	elif [[ $1 == "help" ]]; then
+			printHelp
+			exit 0
 	else
 		echo "Version goes up"
 		NEW_VERSION_CODE=`echo $CURRENT_VERSION_CODE +1 | bc`
