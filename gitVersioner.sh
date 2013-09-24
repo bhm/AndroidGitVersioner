@@ -11,7 +11,7 @@ BACKUP="AndroidManifest.xml.orig"
 VERSION_PREFIX="version-"
 GIT_CONFIG="./.git/config"
 if [ ! -f $MANIFEST ]; then
-	echo "Did not find $MANIFEST!"
+	echo "Have not found $MANIFEST!"
 	exit 1
 fi
 cp $MANIFEST $WORKING_COPY
